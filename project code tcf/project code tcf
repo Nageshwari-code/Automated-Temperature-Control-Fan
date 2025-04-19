@@ -1,0 +1,25 @@
+const int tempPin = A0;      // LM35 connected to A0
+const int fanPin = 9;        // Fan connected to digital pin 9 (via transistor)
+
+void setup() {
+  pinMode(fanPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading = analogRead(tempPin);          // Read analog value from sensor
+  float voltage = reading * 5.0 / 1023.0;     // Convert to voltage
+  float temperatureC = voltage * 100;         // LM35 gives 10mV per °C
+
+  Serial.print("Temperature: ");
+  Serial.print(temperatureC);
+  Serial.println(" °C");
+
+  if (temperatureC > 30) {
+    digitalWrite(fanPin, HIGH);  // Turn fan ON
+  } else {
+    digitalWrite(fanPin, LOW);   // Turn fan OFF
+  }
+
+  delay(1000);  // Wait for a second
+}
